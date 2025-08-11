@@ -1,0 +1,9 @@
+rootProject.name = 'ai_web_app_fingerprinter'
+
+sourceControl {
+    gitRepository("https://github.com/maoning/tsunami-security-scanner.git") {
+        producesModule("com.google.tsunami:tsunami-common")
+        producesModule("com.google.tsunami:tsunami-plugin")
+        producesModule("com.google.tsunami:tsunami-proto")
+    }
+}
