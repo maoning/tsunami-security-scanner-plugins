@@ -22,7 +22,9 @@ import com.google.cloud.vertexai.generativeai.GenerativeModel;
 import com.google.cloud.vertexai.generativeai.ResponseHandler;
 import com.google.common.flogger.GoogleLogger;
 import com.google.protobuf.Value;
+import com.google.tsunami.proto.AiWebServiceContext;
 import com.google.tsunami.proto.NetworkService;
+import com.google.tsunami.proto.ServiceContext;
 import com.google.tsunami.proto.Software;
 import com.google.tsunami.proto.Version;
 import com.google.tsunami.proto.Version.VersionType;
@@ -157,27 +159,29 @@ final class GeminiInferenceService implements AiInferenceService {
 
       NetworkService.Builder networkServiceBuilder =
           networkService.toBuilder()
-              .setAiWebServiceContext(
-                  AiWebServiceContext.newBuilder()
-                      .setSoftware(Software.newBuilder().setName(applicationName).build())
-                      .setVersion(version)
-                      .setIsLoginFormPresent(isLoginFormPresent)
-                      .setIsAuthenticationRequired(isAuthenticationRequired)
-                      .setHasKnownDefaultUsernamePassword(hasKnownDefaultUsernamePassword)
-                      .setDefaultUsername(defaultUsername)
-                      .setDefaultPassword(defaultPassword)
-                      .setIsAdminPage(isAdminPage)
-                      .setIsMetricsDashboard(isMetricsDashboard)
-                      .setIsKubernetesDeployment(isKubernetesDeployment)
-                      .setIsDemoInstance(isDemoInstance)
-                      .setAllowsCodeExecution(allowsCoedExecution)
-                      .setAllowsFileSystemAccess(allowsFileSystemAccess)
-                      .setIsDataStorageSolution(isDataStorageSolution)
-                      .setAllowsWorkflowExecution(allowsWorkflowExecution)
-                      .setUserSignUpFormPresent(isUserSignUpFormPresent)
-                      .setIsExposedWebAdminUi(isExposedWebAdminUi)
-                      .setRationale(rationale)
-                      .build());
+              .setServiceContext(
+                  ServiceContext.newBuilder()
+                      .setAiWebServiceContext(
+                          AiWebServiceContext.newBuilder()
+                              .setSoftware(Software.newBuilder().setName(applicationName).build())
+                              .setVersion(version)
+                              .setIsLoginFormPresent(isLoginFormPresent)
+                              .setIsAuthenticationRequired(isAuthenticationRequired)
+                              .setHasKnownDefaultUsernamePassword(hasKnownDefaultUsernamePassword)
+                              .setDefaultUsername(defaultUsername)
+                              .setDefaultPassword(defaultPassword)
+                              .setIsAdminPage(isAdminPage)
+                              .setIsMetricsDashboard(isMetricsDashboard)
+                              .setIsKubernetesDeployment(isKubernetesDeployment)
+                              .setIsDemoInstance(isDemoInstance)
+                              .setAllowsCodeExecution(allowsCoedExecution)
+                              .setAllowsFileSystemAccess(allowsFileSystemAccess)
+                              .setIsDataStorageSolution(isDataStorageSolution)
+                              .setAllowsWorkflowExecution(allowsWorkflowExecution)
+                              .setIsUserSignUpFormPresent(isUserSignUpFormPresent)
+                              .setIsExposedWebAdminUi(isExposedWebAdminUi)
+                              .setRationale(rationale)
+                              .build()));
 
       if (!version.equals("value_unknown")) {
         networkServiceBuilder.setVersionSet(

@@ -18,7 +18,7 @@ package com.google.tsunami.plugins.fingerprinters.ai;
 import com.google.tsunami.plugin.PluginBootstrapModule;
 import com.google.tsunami.plugins.fingerprinters.ai.inference.GeminiClientModule;
 
-/** A {@link PluginBootstrapModule} for {@link WebServiceFingerprinter}. */
+/** A {@link PluginBootstrapModule} for {@link AiWebServiceFingerprinter}. */
 public final class AiWebServiceFingerprinterBootstrapModule extends PluginBootstrapModule {
 
   @Override

@@ -18,8 +18,8 @@ package com.google.tsunami.plugins.fingerprinters.ai;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.beust.jcommander.Parameter;
-import com.beust.jcommander.Parameters;
 import com.beust.jcommander.ParameterException;
+import com.beust.jcommander.Parameters;
 import com.google.tsunami.common.cli.CliOption;
 import javax.inject.Inject;
 
@@ -40,7 +40,7 @@ public final class AiWebServiceFingerprinterConfigs {
     return cliOptions.gcpLocation;
   }
 
-  /** CLI options for {@link WebServiceFingerprinter}. */
+  /** CLI options for {@link AiWebServiceFingerprinter}. */
   @Parameters(separators = "=")
   public static final class AiWebServiceFingerprinterCliOptions implements CliOption {
 

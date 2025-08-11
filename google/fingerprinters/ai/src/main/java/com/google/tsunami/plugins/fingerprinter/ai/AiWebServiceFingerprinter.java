@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.tsunami.plugins.fingerprinters.web;
+package com.google.tsunami.plugins.fingerprinters.ai;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.tsunami.common.net.http.HttpRequest.get;
@@ -56,14 +56,17 @@ public final class AiWebServiceFingerprinter implements ServiceFingerprinter {
 """
 1. Is there a login form present on the homepage? Don't assume anything, only return true if the login form html is present on the homepage.
 2. Is authentication required to access the application? Don't assume anything, if the application doesn't explicitly state that authentication is required, then assume that authentication is not required.
-3. Is there an admin page? An admin page is a page that allows the user to perform admin/privileged actions such as updating user accounts, deleting data, or configuring settings.
-4. Does the application have known default username and password? If yes, then return the default username and password. If no, set the default username and password to 'value_unknown'.
-5. Does the application allow code execution, in other words, allows the user to run arbitrary code or system commands.
-6. Does the application allow file system access, in other words, allows the user to read or write files in the file system.
-7. Is the application a data storage solution, in other words, is the application a database or a file server.
-8. Does the application allow workflow execution, in other words, allows the user to execute workflows or scripts.
-9. Does this look like an exposed web admin UI/Panel/Dashboard that allows for admin actions or code executions without authentication?
-10. Is there a user sign-up form present on the homepage? Don't assume anything, only return true if the user sign-up form html is present on the homepage.
+3. Does the application have known default username and password? If yes, then return the default username and password. If no, set the default username and password to 'value_unknown'.
+4. Is there an admin page? An admin page is a page that allows the user to perform admin/privileged actions such as updating user accounts, deleting data, or configuring settings.
+5. Is there a metrics dashboard? A metrics dashboard is a page that allows the user to view metrics about the application's performance, usage, and functionality.
+6. Is the application a Kubernetes deployment? If it contains known identifiers related to Kubernetes.
+7. Is the application a demo instance? If it looks like a demo or test instance with placeholders or test data.
+8. Does the application allow code execution, in other words, allows the user to run arbitrary code or system commands.
+9. Does the application allow file system access, in other words, allows the user to read or write files in the file system.
+10. Is the application a data storage solution, in other words, is the application a database or a file server.
+11. Does the application allow workflow execution, in other words, allows the user to execute workflows or scripts.
+12. Is there a user sign-up form present on the homepage? Don't assume anything, only return true if the user sign-up form html is present on the homepage.
+13. Does this look like an exposed web admin UI/Panel/Dashboard that allows for admin actions or code executions without authentication?
 """
           + "\nPlease provide the rationale for your decision. If you failed to identify the web"
           + " application, please provide a rationale and set the"

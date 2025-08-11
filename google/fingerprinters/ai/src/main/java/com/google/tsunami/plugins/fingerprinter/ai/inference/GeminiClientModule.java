@@ -15,8 +15,6 @@
  */
 package com.google.tsunami.plugins.fingerprinters.ai.inference;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import com.google.cloud.vertexai.VertexAI;
 import com.google.cloud.vertexai.api.FunctionDeclaration;
 import com.google.cloud.vertexai.api.Schema;
@@ -26,6 +24,7 @@ import com.google.cloud.vertexai.generativeai.GenerativeModel;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import com.google.tsunami.plugins.fingerprinters.ai.AiWebServiceFingerprinterConfigs;
 import java.io.IOException;
 import javax.inject.Singleton;
 
@@ -34,23 +33,18 @@ import javax.inject.Singleton;
  * methods for common tasks such as generating text, reasoning, and code execution.
  */
 public final class GeminiClientModule extends AbstractModule {
-  private final AiWebServiceFingerprinterConfigs configs;
+  public GeminiClientModule() {}
 
   @Override
   protected void configure() {
     bind(AiInferenceService.class).to(GeminiInferenceService.class);
   }
 
-  @Inject
-  GeminiClientModule(
-    AiWebServiceFingerprinterConfigs configs) {
-        this.configs = checkNotNull(configs);
-  }
-
   @Provides
   @Singleton
-  GenerativeModel provideGenerativeModel() throws IOException {
-    VertexAI vertexAI = new VertexAI(configs.getGcpProjectId, configs.getGcpLocation);
+  GenerativeModel provideGenerativeModel(AiWebServiceFingerprinterConfigs configs)
+      throws IOException {
+    VertexAI vertexAI = new VertexAI(configs.getGcpProjectId(), configs.getGcpLocation());
     FunctionDeclaration functionDeclaration =
         FunctionDeclaration.newBuilder()
             .setName("fingerprintWebService")
@@ -66,7 +60,6 @@ public final class GeminiClientModule extends AbstractModule {
                     .putProperties(
                         "isAuthenticationRequired",
                         Schema.newBuilder().setType(Type.BOOLEAN).build())
-                    .putProperties("isAdminPage", Schema.newBuilder().setType(Type.BOOLEAN).build())
                     .putProperties(
                         "hasKnownDefaultUsernamePassword",
                         Schema.newBuilder().setType(Type.BOOLEAN).build())
@@ -74,6 +67,13 @@ public final class GeminiClientModule extends AbstractModule {
                         "defaultUsername", Schema.newBuilder().setType(Type.STRING).build())
                     .putProperties(
                         "defaultPassword", Schema.newBuilder().setType(Type.STRING).build())
+                    .putProperties("isAdminPage", Schema.newBuilder().setType(Type.BOOLEAN).build())
+                    .putProperties(
+                        "isMetricsDashboard", Schema.newBuilder().setType(Type.BOOLEAN).build())
+                    .putProperties(
+                        "isKubernetesDeployment", Schema.newBuilder().setType(Type.BOOLEAN).build())
+                    .putProperties(
+                        "isDemoInstance", Schema.newBuilder().setType(Type.BOOLEAN).build())
                     .putProperties(
                         "allowsCoedExecution", Schema.newBuilder().setType(Type.BOOLEAN).build())
                     .putProperties(
@@ -84,16 +84,19 @@ public final class GeminiClientModule extends AbstractModule {
                         "allowsWorkflowExecution",
                         Schema.newBuilder().setType(Type.BOOLEAN).build())
                     .putProperties(
-                        "isExposedWebAdminUi", Schema.newBuilder().setType(Type.BOOLEAN).build())
-                    .putProperties(
                         "userSignUpFormPresent", Schema.newBuilder().setType(Type.BOOLEAN).build())
+                    .putProperties(
+                        "isExposedWebAdminUi", Schema.newBuilder().setType(Type.BOOLEAN).build())
                     .putProperties("rationale", Schema.newBuilder().setType(Type.STRING).build())
                     .addRequired("applicationName")
                     .addRequired("version")
                     .addRequired("isLoginFormPresent")
                     .addRequired("isAuthenticationRequired")
-                    .addRequired("isAdminPage")
                     .addRequired("hasKnownDefaultUsernamePassword")
+                    .addRequired("isAdminPage")
+                    .addRequired("isMetricsDashboard")
+                    .addRequired("isKubernetesDeployment")
+                    .addRequired("isDemoInstance")
                     .addRequired("allowsCoedExecution")
                     .addRequired("allowsFileSystemAccess")
                     .addRequired("isDataStorageSolution")
