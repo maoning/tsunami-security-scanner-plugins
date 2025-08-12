@@ -66,7 +66,7 @@ public final class AiWebServiceFingerprinter implements ServiceFingerprinter {
 10. Is the application a data storage solution, in other words, is the application a database or a file server.
 11. Does the application allow workflow execution, in other words, allows the user to execute workflows or scripts.
 12. Is there a user sign-up form present on the homepage? Don't assume anything, only return true if the user sign-up form html is present on the homepage.
-13. Does this look like an exposed web admin UI/Panel/Dashboard that allows for admin actions or code executions without authentication?
+13. Does this look like an exposed web admin UI/Panel/Dashboard that allows for workflow execution, admin actions or code executions without authentication?
 """
           + "\nPlease provide the rationale for your decision. If you failed to identify the web"
           + " application, please provide a rationale and set the"

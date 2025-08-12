@@ -22,6 +22,7 @@ import com.google.cloud.vertexai.api.Tool;
 import com.google.cloud.vertexai.api.Type;
 import com.google.cloud.vertexai.generativeai.GenerativeModel;
 import com.google.common.collect.ImmutableList;
+import com.google.common.flogger.GoogleLogger;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.tsunami.plugins.fingerprinters.ai.AiWebServiceFingerprinterConfigs;
@@ -33,6 +34,8 @@ import javax.inject.Singleton;
  * methods for common tasks such as generating text, reasoning, and code execution.
  */
 public final class GeminiClientModule extends AbstractModule {
+  private static final GoogleLogger logger = GoogleLogger.forEnclosingClass();
+
   public GeminiClientModule() {}
 
   @Override
@@ -44,6 +47,9 @@ public final class GeminiClientModule extends AbstractModule {
   @Singleton
   GenerativeModel provideGenerativeModel(AiWebServiceFingerprinterConfigs configs)
       throws IOException {
+    logger.atInfo().log(
+        "Creating Gemini client, with project id: %s, location: %s",
+        configs.getGcpProjectId(), configs.getGcpLocation());
     VertexAI vertexAI = new VertexAI(configs.getGcpProjectId(), configs.getGcpLocation());
     FunctionDeclaration functionDeclaration =
         FunctionDeclaration.newBuilder()
@@ -84,7 +90,8 @@ public final class GeminiClientModule extends AbstractModule {
                         "allowsWorkflowExecution",
                         Schema.newBuilder().setType(Type.BOOLEAN).build())
                     .putProperties(
-                        "userSignUpFormPresent", Schema.newBuilder().setType(Type.BOOLEAN).build())
+                        "isUserSignUpFormPresent",
+                        Schema.newBuilder().setType(Type.BOOLEAN).build())
                     .putProperties(
                         "isExposedWebAdminUi", Schema.newBuilder().setType(Type.BOOLEAN).build())
                     .putProperties("rationale", Schema.newBuilder().setType(Type.STRING).build())
@@ -102,7 +109,7 @@ public final class GeminiClientModule extends AbstractModule {
                     .addRequired("isDataStorageSolution")
                     .addRequired("allowsWorkflowExecution")
                     .addRequired("isExposedWebAdminUi")
-                    .addRequired("userSignUpFormPresent")
+                    .addRequired("isUserSignUpFormPresent")
                     .addRequired("rationale")
                     .build())
             .build();

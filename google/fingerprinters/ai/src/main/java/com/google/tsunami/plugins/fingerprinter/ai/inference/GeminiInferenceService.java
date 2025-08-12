@@ -50,7 +50,8 @@ final class GeminiInferenceService implements AiInferenceService {
       FunctionCall functionCall = ResponseHandler.getFunctionCalls(response).get(0);
       Map<String, Value> responseContent = functionCall.getArgs().getFieldsMap();
 
-      if (responseContent.get("applicationName") == null) {
+      if (responseContent == null || responseContent.get("applicationName") == null) {
+        logger.atSevere().log("Didn't receive any response from AI.");
         return networkService;
       }
       String applicationName = responseContent.get("applicationName").getStringValue();
@@ -111,7 +112,7 @@ final class GeminiInferenceService implements AiInferenceService {
               + "--------------------------------------------------------------------------------\n",
           networkService.getNetworkEndpoint().getIpAddress().getAddress(),
           networkService.getNetworkEndpoint().getPort().getPortNumber(),
-          applicationName,
+          applicationName.toLowerCase(),
           version,
           isLoginFormPresent,
           isAuthenticationRequired,
@@ -134,7 +135,7 @@ final class GeminiInferenceService implements AiInferenceService {
           "CSV: %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s",
           networkService.getNetworkEndpoint().getIpAddress().getAddress(),
           networkService.getNetworkEndpoint().getPort().getPortNumber(),
-          applicationName,
+          applicationName.toLowerCase(),
           version,
           isLoginFormPresent,
           isAuthenticationRequired,
@@ -163,7 +164,8 @@ final class GeminiInferenceService implements AiInferenceService {
                   ServiceContext.newBuilder()
                       .setAiWebServiceContext(
                           AiWebServiceContext.newBuilder()
-                              .setSoftware(Software.newBuilder().setName(applicationName).build())
+                              .setSoftware(
+                                  Software.newBuilder().setName(applicationName.toLowerCase()))
                               .setVersion(version)
                               .setIsLoginFormPresent(isLoginFormPresent)
                               .setIsAuthenticationRequired(isAuthenticationRequired)
