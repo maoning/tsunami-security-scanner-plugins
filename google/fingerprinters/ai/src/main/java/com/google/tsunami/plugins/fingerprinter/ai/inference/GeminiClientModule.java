@@ -116,6 +116,10 @@ public final class GeminiClientModule extends AbstractModule {
 
     Tool tool = Tool.newBuilder().addFunctionDeclarations(functionDeclaration).build();
 
-    return new GenerativeModel("gemini-2.5-pro", vertexAI).withTools(ImmutableList.of(tool));
+    String modelName = "gemini-2.5-pro";
+    if (configs.getAiModelName() != null) {
+      modelName = configs.getAiModelName();
+    }
+    return new GenerativeModel(modelName, vertexAI).withTools(ImmutableList.of(tool));
   }
 }

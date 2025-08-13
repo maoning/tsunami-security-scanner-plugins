@@ -40,6 +40,10 @@ public final class AiWebServiceFingerprinterConfigs {
     return cliOptions.gcpLocation;
   }
 
+  public String getAiModelName() {
+    return cliOptions.aiModelName;
+  }
+
   /** CLI options for {@link AiWebServiceFingerprinter}. */
   @Parameters(separators = "=")
   public static final class AiWebServiceFingerprinterCliOptions implements CliOption {
@@ -56,6 +60,14 @@ public final class AiWebServiceFingerprinterConfigs {
         names = "--gcp-location",
         description = "The GCP location to use for AI inference, for example us-central1.")
     String gcpLocation;
+
+    @Parameter(
+        names = "--ai-model-name",
+        description =
+            "The AI model name to use for AI inference, for example gemini-2.5-flash. View"
+                + " available models at https://ai.google.dev/gemini-api/docs/models. Defaults to"
+                + " gemini-2.5-pro.")
+    String aiModelName;
 
     @Override
     public void validate() {

@@ -81,7 +81,7 @@ public final class AiWebServiceFingerprinter implements ServiceFingerprinter {
     this.aiInferenceService = checkNotNull(aiInferenceService);
     this.httpClient = checkNotNull(httpClient);
   }
-  
+
   @Override
   public FingerprintingReport fingerprint(TargetInfo targetInfo, NetworkService networkService) {
     logger.atInfo().log("AiWebServiceFingerprinter networkService: %s", networkService.toString());
@@ -95,14 +95,12 @@ public final class AiWebServiceFingerprinter implements ServiceFingerprinter {
     try {
       HttpResponse response = httpClient.send(get(url).withEmptyHeaders().build());
 
-      logger.atInfo().log(
-          "AiWebServiceFingerprinter http response headers and body : %s",
-          response.headers().toString() + response.bodyString().get());
+      String promptWithHtmlResponse =
+          String.format(PROMPT, response.headers().toString() + response.bodyString().get());
+      logger.atInfo().log("AiWebServiceFingerprinter prompt: %s", promptWithHtmlResponse);
 
       NetworkService enrichedNetworkService =
-          aiInferenceService.identifyWebApplication(
-              networkService,
-              String.format(PROMPT, response.headers().toString() + response.bodyString().get()));
+          aiInferenceService.identifyWebApplication(networkService, promptWithHtmlResponse);
 
       return FingerprintingReport.newBuilder().addNetworkServices(enrichedNetworkService).build();
     } catch (Exception e) {
